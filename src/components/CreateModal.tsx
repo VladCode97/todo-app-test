@@ -11,7 +11,7 @@ const CreateModal = ({
   setOpenCreate: (openCreate: boolean) => void;
   createNewTask: () => void;
   editSomeTask: () => void;
-  setTask: (task: ITask) => void;
+  setTask: (task: (prev: ITask) => { id: number; state: string; title: string }) => void;
   task: ITask | null;
   isEditing: boolean;
 }) => {
@@ -23,7 +23,7 @@ const CreateModal = ({
           placeholder="Title"
           value={task?.title}
           onChange={(event) => {
-            setTask((prev: ITask) => ({ ...prev, title: event.target.value }));
+            setTask((prev: ITask) =>  ({ ...prev, title: event.target.value }));
           }}
         />
         <select
@@ -44,12 +44,14 @@ const CreateModal = ({
             onClick={() => {
               if (isEditing) {
                 editSomeTask();
+                setOpenCreate(false);
               } else {
                 createNewTask();
+                setOpenCreate(false);
               }
             }}
           >
-            Create
+            {isEditing ? 'Edit' : 'Create'}
           </button>
           <button
             className="button--secondary"

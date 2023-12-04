@@ -11,7 +11,7 @@ import CreateModal from '../components/CreateModal';
 const ToDoList = () => {
   const [taskList, setTaskList] = useState<Array<ITask>>([]);
   const [openCreate, setOpenCreate] = useState<boolean>(false);
-  const [task, setTask] = useState<ITask | null>(null);
+  const [task, setTask] = useState<ITask>({ id: 0, state: '', title: '' });
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const getTasks = async () => {
@@ -25,7 +25,8 @@ const ToDoList = () => {
 
   const createNewTask = async () => {
     try {
-      const response = await createTasks(task);
+      await createTasks(task);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +34,8 @@ const ToDoList = () => {
 
   const editSomeTask = async () => {
     try {
-      const response = await editTasks(task);
+      await editTasks(task);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }
@@ -41,8 +43,9 @@ const ToDoList = () => {
 
   const deleteSomeTask = async (idTask: number) => {
     try {
-      const { data } = await deleteTasks(idTask);
-      setTaskList(data);
+      await deleteTasks(idTask);
+      setTaskList((await getTasksList()).data);
+      await getTasks();
     } catch (error) {
       console.log(error);
     }

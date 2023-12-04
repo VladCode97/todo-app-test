@@ -5,7 +5,7 @@ export const getTasksList = () => {
   return axios.get('https://backend-nuawi-f58654165e2a.herokuapp.com/task');
 };
 
-export const createTasks = (data: ITask | null) => {
+export const createTasks = (data: ITask) => {
   data.id = Math.floor(Math.random() * 100);
   return axios.post(
     'https://backend-nuawi-f58654165e2a.herokuapp.com/task',
